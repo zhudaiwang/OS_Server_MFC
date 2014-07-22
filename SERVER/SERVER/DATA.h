@@ -66,7 +66,7 @@ typedef struct tagDATA_T *P_DATA_T;
 typedef struct tagClientAddr_T
 {
 	SOCKET unSocket;
-
+	char acIPstr[32];
 	unsigned int unIpAddress;
 	unsigned int nBufferLenth;
 	char acSendBuffer[256];
@@ -75,7 +75,7 @@ typedef struct tagClientAddr_T
 
 
 
-P_ClientAddr_T AddNewClientAddr(unsigned int unClientAddr);
+P_ClientAddr_T AddNewClientAddr(unsigned int unClientAddr , char* pcIPstr);
 
 P_DATA_T  AddNewRecvBuf(SOCKET unAcceptSocket, unsigned int unClientIPaddr); 
 

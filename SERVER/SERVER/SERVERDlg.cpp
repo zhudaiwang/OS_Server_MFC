@@ -168,11 +168,14 @@ void CSERVERDlg::OnTimer(UINT_PTR nIDEvent)
 	}
 	else
 	{
+		m_ClientIP = "";
+		EnterCriticalSection(&g_csClientLIST);	// 进入临界区	客户端表
+
 		PLIST_NODE_T pstTempNode = pstClientLIST->pstFirstNode;
 
 		for (int nIndex = 0;nIndex<pstClientLIST->nNodeCount; nIndex++)
 		{
-			EnterCriticalSection(&g_csClientLIST);	// 进入临界区	客户端表
+
 
 			char* pcIPaddress = (char*)pstTempNode;
 
@@ -180,19 +183,17 @@ void CSERVERDlg::OnTimer(UINT_PTR nIDEvent)
 			P_ClientAddr_T pstClientNode = (P_ClientAddr_T)(*pnTmp);
 
 			CString CSclientIP;
-			CSclientIP.Format("%d",pstClientNode->unIpAddress);
-
-			m_ClientIP = CSclientIP;
-
-			UpdateData(FALSE);
-
-			LeaveCriticalSection(&g_csClientLIST);		// 离开临界区	客户端表
+			CSclientIP = (CString)pstClientNode->acIPstr;
+			m_ClientIP.Append("\n");
+			m_ClientIP.Append(CSclientIP);
 
 			pstTempNode = pstTempNode->pstNexter;
 
 		}
-		
-	}
 
+		LeaveCriticalSection(&g_csClientLIST);		// 离开临界区	客户端表
+	
+	}
+	UpdateData(FALSE);
 	CDialogEx::OnTimer(nIDEvent);
 }

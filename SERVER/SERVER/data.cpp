@@ -46,12 +46,12 @@ DeleteCriticalSection(&cs);
 
 
 
-P_ClientAddr_T AddNewClientAddr(unsigned int unClientAddr)
+P_ClientAddr_T AddNewClientAddr(unsigned int unClientAddr,char* pcIPstr)
 {
 	P_ClientAddr_T pstClientNode = NULL;
 	pstClientNode = (P_ClientAddr_T)malloc(sizeof(ClientAddr_T));
 	memset(pstClientNode, 0x00, sizeof(ClientAddr_T));
-	
+	memcpy(pstClientNode->acIPstr, pcIPstr,15);
 	pstClientNode->unIpAddress = unClientAddr;
 	return pstClientNode;
 }

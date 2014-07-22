@@ -114,7 +114,7 @@ unsigned int __stdcall main_WaitConn(void *)
 
 			if (pstTmpNode == NULL)																			//无节点			
 			{
-				P_ClientAddr_T pstClientNode = AddNewClientAddr(client.sin_addr.S_un.S_addr); 				//生成节点
+				P_ClientAddr_T pstClientNode = AddNewClientAddr(client.sin_addr.S_un.S_addr, inet_ntoa(client.sin_addr)); 				//生成节点
 				LST_Insert(pstClientLIST, 1024, pstClientNode, sizeof(ClientAddr_T));					//添加节点
 			}
 			else /* (找到了节点)*/
