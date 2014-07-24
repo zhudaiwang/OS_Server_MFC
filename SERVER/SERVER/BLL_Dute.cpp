@@ -20,7 +20,8 @@ P_DATA_T DLL_GetNode()
 	if(pstDuteFIFO != NULL)
 	{
 		EnterCriticalSection(&g_csDuteFIFO);		// 进入临界区	业务处理FIFO
-		pstTmp = (P_DATA_T)FIFO_Pop(pstDuteFIFO); 
+		pstTmp = (P_DATA_T)FIFO_Pop(pstDuteFIFO);
+
 		if ( pstTmp != NULL)
 		{
 			printf("-------------业务处理FIFO----------------\n");
@@ -95,6 +96,27 @@ unsigned int __stdcall BLL_DuteFunc(void *)
 	while(1)
 	{
 		P_DATA_T pstTmp = DLL_GetNode();
+		P_DATA_T pstInMFC = NULL;
+
+
+		//把节点内容通过pstDuteFIFO_MFC 传送到外部的MFC中。
+		EnterCriticalSection(&g_csDuteFIFO_MFC);		// 进入临界区	业务处理外部的MFC FIFO
+
+		if(pstTmp != NULL)
+		{
+			pstInMFC = (P_DATA_T)malloc(sizeof(DATA_T));
+			memset(pstInMFC, 0, sizeof(DATA_T));
+			memcpy(pstInMFC, pstTmp, sizeof(DATA_T));
+			if(pstDuteFIFO_MFC != NULL)
+			{
+				FIFO_Push(pstDuteFIFO_MFC, pstInMFC); 
+				printf("  节点放到FIFO里 \n");
+			}
+		}
+
+
+		
+		LeaveCriticalSection(&g_csDuteFIFO_MFC);		// 离开临界区	业务处理外部的MFC FIFO
 
 		if ( pstTmp != 0)
 		{

@@ -12,6 +12,8 @@ PLIST_HEADER_T pstRsLIST  = NULL;
 
 P_FIFO_T pstDuteFIFO = NULL;
 
+P_FIFO_T pstDuteFIFO_MFC = NULL;
+
 PLIST_HEADER_T pstClientLIST = NULL;
 
 
@@ -23,6 +25,8 @@ CRITICAL_SECTION g_csClientLIST; //2
 CRITICAL_SECTION g_csConnFIFO ;  //1
 CRITICAL_SECTION g_csDuteFIFO ;  //4
 CRITICAL_SECTION g_csRsLIST ;    //3
+CRITICAL_SECTION g_csDuteFIFO_MFC;
+
 
 
 #if 0
@@ -71,8 +75,13 @@ P_DATA_T  AddNewRecvBuf(SOCKET unClientSocket, unsigned int unClientIPaddr)
 
 void putOutLowNum(unsigned int nNum)
 {
-	printf("%x", (nNum&0xF0)>>4);
-	printf("%x ", nNum&0xF);
+	char acChar[3];
+	sprintf(&acChar[0], "%x",(nNum&0xF0)>>4);
+	sprintf(&acChar[1], "%x",nNum&0xF);
+	printf("%s", acChar);
+	//printf("%x", (nNum&0xF0)>>4);
+	//printf("%x ", nNum&0xF);
+
 }
 
 

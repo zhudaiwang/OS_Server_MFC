@@ -194,6 +194,39 @@ void CSERVERDlg::OnTimer(UINT_PTR nIDEvent)
 		LeaveCriticalSection(&g_csClientLIST);		// 离开临界区	客户端表
 	
 	}
+
+	P_DATA_T pstTmp = NULL;
+
+	EnterCriticalSection(&g_csDuteFIFO_MFC);		// 进入临界区	业务处理外部的MFC FIFO
+	if(pstDuteFIFO_MFC != NULL)
+	{
+		pstTmp = (P_DATA_T)FIFO_Pop(pstDuteFIFO_MFC);
+		printf("  节点从FIFO_MFC取出 \n");
+	}
+	
+
+	if (pstTmp != NULL)
+	{
+		char *pcOutString = new char[pstTmp->nRecvBuffSize *3 +3];
+		CString str;
+		char *pcOutStringStart = pcOutString;
+		for (int nIndex = 0; nIndex< pstTmp->nRecvBuffSize; nIndex++)
+		{
+	
+			//pstTmp->acRecvBuff
+			char acChar[3];
+			sprintf(&acChar[0], "%x",(pstTmp->acRecvBuff[nIndex]&0xF0)>>4);
+			sprintf(&acChar[1], "%x",pstTmp->acRecvBuff[nIndex]&0xF);
+			//sprintf(&acChar[2], '.');
+			//sprintf(pcOutStringStart, "%s", acChar);
+			
+			str += acChar;
+			str += " ";
+		}
+		m_recvOut = str;
+		//SetDlgItemText(IDC_EDIT2, str);
+	}
+	LeaveCriticalSection(&g_csDuteFIFO_MFC);		// 离开临界区	业务处理外部的MFC FIFO
 	UpdateData(FALSE);
 	CDialogEx::OnTimer(nIDEvent);
 }

@@ -22,6 +22,7 @@
 extern P_FIFO_T pstConnFIFO;
 extern PLIST_HEADER_T pstRsLIST;
 extern P_FIFO_T pstDuteFIFO;
+extern P_FIFO_T pstDuteFIFO_MFC;
 extern PLIST_HEADER_T pstClientLIST;
 
 
@@ -32,6 +33,8 @@ extern CRITICAL_SECTION g_csConnFIFO ;
 
 extern CRITICAL_SECTION g_csDuteFIFO ;  //4
 extern CRITICAL_SECTION g_csRsLIST ;    //3
+
+extern CRITICAL_SECTION g_csDuteFIFO_MFC;
 
 
 

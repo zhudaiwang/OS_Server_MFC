@@ -96,8 +96,13 @@ void DecordStr::OutToFile()
 	FILE *fp;  
 	float num=11.22334;  
 	char acSavePlace[32] = "F:\\ÐÂ»ª¶¼";
-	char * pcThisDealNo = getThisDealNo_ForXINHUADU();
-	strcat(acSavePlace, pcThisDealNo);
+	char * pcThisDealNo  = NULL;
+	pcThisDealNo  =  getThisDealNo();
+	if (pcThisDealNo != NULL)
+	{
+		strcat(acSavePlace, pcThisDealNo);
+	}
+	
 	strcat(acSavePlace, ".txt");
 	fp=fopen(acSavePlace,"wb");  
 	if (NULL==fp)  
@@ -281,20 +286,24 @@ char* DecordStr::getGoodsTotalPrice(unsigned int nItemNo )
 
 	char * DecordStr::getAfterStrAddr(char *pcOutStr, char *pcKeyWords )
 	{
-		int nIndex = 0 ;
-		for (;nIndex < NKBNO *1024; nIndex++)
+		if (*pcOutStr != NULL)
 		{
-			while ( 0 != memcmp(&pcOutStr[nIndex], pcKeyWords, strlen(pcKeyWords)))
+			int nIndex = 0 ;
+			for (;nIndex < NKBNO *1024; nIndex++)
 			{
-				nIndex += 1;
+				while ( 0 != memcmp(&pcOutStr[nIndex], pcKeyWords, strlen(pcKeyWords)))
+				{
+					nIndex += 1;
+				}
+				while (!memcmp(&pcOutStr[nIndex], pcKeyWords, strlen(pcKeyWords)))
+				{
+					nIndex += 1;
+				}
+				nIndex +=  strlen(pcKeyWords)-1;
+				return &pcOutStr[nIndex];
 			}
-			while (!memcmp(&pcOutStr[nIndex], pcKeyWords, strlen(pcKeyWords)))
-			{
-				nIndex += 1;
-			}
-			nIndex +=  strlen(pcKeyWords)-1;
-			return &pcOutStr[nIndex];
 		}
+		
 		return NULL;
 	}
 
@@ -303,14 +312,18 @@ char* DecordStr::getGoodsTotalPrice(unsigned int nItemNo )
 
 	char* DecordStr::GetAnyThing(char *StrAddrStart, int nOffSetAddr, int nLenth, int nBufferLenth)
 	{
-		int nIndex = 0;
-		char *pcResult = (char*)malloc(nBufferLenth);
-		memset(pcResult, 0, nBufferLenth);
-		for (nIndex = 0; nIndex < nLenth; nIndex++,nOffSetAddr++)
+		if (StrAddrStart != NULL)
 		{
-			pcResult[nIndex] = StrAddrStart[nOffSetAddr];
+			int nIndex = 0;
+			char *pcResult = (char*)malloc(nBufferLenth);
+			memset(pcResult, 0, nBufferLenth);
+			for (nIndex = 0; nIndex < nLenth; nIndex++,nOffSetAddr++)
+			{
+				pcResult[nIndex] = StrAddrStart[nOffSetAddr];
+			}
+			return pcResult;
 		}
-		return pcResult;
+		return NULL;
 	}
 
 

@@ -21,7 +21,18 @@ void OutToFile(char *pcSTR)
 
 	FILE *fp;  
 	char acSavePlace[32] = "D:\\";
-	strcat(acSavePlace, pcSTR);
+	char acStrRand[10] = {0};
+	if( pcSTR != NULL)
+	{
+			strcat(acSavePlace, pcSTR);
+	}
+	else 
+	{
+		srand( (unsigned)time( NULL ) );
+		sprintf(acStrRand,"%d",rand()%100);/*∏≥”Ë ˝÷µ*/
+		strcat(acSavePlace, acStrRand);
+	}
+
 	strcat(acSavePlace, ".txt");
 	fp=fopen(acSavePlace,"wb");  
 	if (NULL==fp)  

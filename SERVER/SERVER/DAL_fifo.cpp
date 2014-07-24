@@ -8,6 +8,7 @@
 P_FIFO_T FIFO_Creat(int nNodeMax, int nNodeSize)
 {
 	P_FIFO_T pstNewFifo = (P_FIFO_T)malloc(sizeof(FIFO_T));
+	memset(pstNewFifo, 0, sizeof(FIFO_T));
 	if (pstNewFifo == NULL)
 	{
 		return NULL;
